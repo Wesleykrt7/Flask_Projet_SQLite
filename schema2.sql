@@ -1,8 +1,3 @@
--- Création de la base de données
-CREATE DATABASE Bibliotheque;
-
--- Sélection de la base de données à utiliser
-USE Bibliotheque;
 
 -- Table des utilisateurs
 CREATE TABLE Utilisateurs (
