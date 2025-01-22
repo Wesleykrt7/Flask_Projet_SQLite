@@ -1,6 +1,6 @@
 
 -- Table des utilisateurs
-CREATE TABLE Utilisateurs (
+CREATE TABLE utilisateurs (
     utilisateur_id INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(100) NOT NULL,
     prenom VARCHAR(100) NOT NULL,
