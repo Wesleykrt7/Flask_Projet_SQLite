@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Livres</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #fff;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Liste des Livres</h1>
+</header>
+
+<main>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Titre</th>
+                <th>Auteur</th>
+                <th>Année de Publication</th>
+                <th>Genre</th>
+                <th>Description</th>
+                <th>Disponible</th>
+                <th>Date d'Ajout</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for livre in livres %}
+                <tr>
+                    <td>{{ livre[0] }}</td>  <!-- livre_id -->
+                    <td>{{ livre[1] }}</td>  <!-- titre -->
+                    <td>{{ livre[2] }}</td>  <!-- auteur -->
+                    <td>{{ livre[3] }}</td>  <!-- annee_publication -->
+                    <td>{{ livre[4] }}</td>  <!-- genre -->
+                    <td>{{ livre[5] }}</td>  <!-- description -->
+                    <td>{{ 'Oui' if livre[6] else 'Non' }}</td>  <!-- disponible -->
+                    <td>{{ livre[7] }}</td>  <!-- date_ajout -->
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</main>
+
+</body>
+</html>
