@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recherche Client</title>
+</head>
+<body>
+    <h1>Recherche de client par nom</h1>
+
+    <!-- Formulaire de recherche -->
+    <form method="POST">
+        <label for="nom">Nom du client :</label>
+        <input type="text" id="nom" name="nom" placeholder="Entrez le nom du client" required>
+        <button type="submit">Rechercher</button>
+    </form>
+
+    {% if clients is not none %}
+        <!-- Affichage des résultats de la recherche -->
+        <h2>Résultats de la recherche :</h2>
+        {% if clients|length == 0 %}
+            <p>Aucun client trouvé avec ce nom.</p>
+        {% else %}
+            <ul>
+                {% for client in clients %}
+                    <li>
+                        <strong>ID :</strong> {{ client[0] }} <br>
+                        <strong>Nom :</strong> {{ client[1] }} <br>
+                        <strong>Prénom :</strong> {{ client[2] }} <br>
+                        <strong>Adresse :</strong> {{ client[3] }} <br>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endif %}
+</body>
+</html>
