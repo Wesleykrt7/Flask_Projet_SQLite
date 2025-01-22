@@ -80,6 +80,18 @@ def enregistrer_client():
     conn.commit()
     conn.close()
     return redirect('/consultation/')  # Rediriger vers la page d'accueil après l'enregistrement
-                                                                                                                                       
+    
+@app.route('/livres')
+def livres():
+    conn = sqlite3.connect('bibliotheque.db')  # Connexion à la base de données contenant les livres
+    cursor = conn.cursor()
+    
+    # Récupérer tous les livres
+    cursor.execute('SELECT * FROM Livres')  # Supposons que la table s'appelle 'Livres'
+    livres = cursor.fetchall()
+    conn.close()
+    
+    return render_template('livres.html', livres=livres)  # Rendre le template et passer les livres comme variable
+                                                                                                                                
 if __name__ == "__main__":
   app.run(debug=True)
