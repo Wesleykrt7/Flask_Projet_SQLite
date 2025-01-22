@@ -1,4 +1,3 @@
--- Création de la table des livres
 CREATE TABLE IF NOT EXISTS livres (
     livre_id INTEGER PRIMARY KEY AUTOINCREMENT,
     titre TEXT NOT NULL,
@@ -9,10 +8,9 @@ CREATE TABLE IF NOT EXISTS livres (
     disponible BOOLEAN DEFAULT 1
 );
 
--- Exemple d'autres tables (facultatif) que vous pouvez ajouter selon les besoins
--- CREATE TABLE IF NOT EXISTS utilisateurs (
---     utilisateur_id INTEGER PRIMARY KEY AUTOINCREMENT,
---     nom TEXT NOT NULL,
---     prenom TEXT NOT NULL,
---     email TEXT UNIQUE NOT NULL
--- );
+CREATE TABLE IF NOT EXISTS utilisateurs (
+    utilisateur_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nom TEXT NOT NULL,
+     prenom TEXT NOT NULL,
+     email TEXT UNIQUE NOT NULL
+);
