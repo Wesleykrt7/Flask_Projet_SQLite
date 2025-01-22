@@ -86,7 +86,7 @@ def livres():
     conn = sqlite3.connect('bibliotheque.db')  # Connexion à la base de données contenant les livres
     cursor = conn.cursor()
     
-    # Récupérer tous les livres
+    # Récupérer tous les livres depuis la table Livres
     cursor.execute('SELECT * FROM Livres')  # Supposons que la table s'appelle 'Livres'
     livres = cursor.fetchall()
     conn.close()
