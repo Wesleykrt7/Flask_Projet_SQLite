@@ -3,91 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste des Livres</title>
+    <title>Formulaire d'Authentification</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
             background-color: #f4f4f4;
+            padding: 20px;
         }
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 1rem;
-            text-align: center;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
+        form {
+            width: 300px;
+            margin: 0 auto;
+            padding: 20px;
             background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
-        th, td {
-            padding: 12px;
-            text-align: left;
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 20px;
             border: 1px solid #ddd;
+            border-radius: 4px;
         }
-        th {
-            background-color: #f2f2f2;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        .supprimer-btn {
-            background-color: red;
+        button {
+            background-color: #4CAF50;
             color: white;
-            padding: 5px 10px;
+            padding: 10px 20px;
             border: none;
+            border-radius: 4px;
             cursor: pointer;
         }
-        .supprimer-btn:hover {
-            background-color: darkred;
+        button:hover {
+            background-color: #45a049;
+        }
+        .error {
+            color: red;
         }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>Liste des Livres</h1>
-</header>
-
-<main>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Titre</th>
-                <th>Auteur</th>
-                <th>Année de Publication</th>
-                <th>Genre</th>
-                <th>Description</th>
-                <th>Disponible</th>
-                <th>Date d'Ajout</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for livre in livres %}
-                <tr>
-                    <td>{{ livre[0] }}</td>  <!-- livre_id -->
-                    <td>{{ livre[1] }}</td>  <!-- titre -->
-                    <td>{{ livre[2] }}</td>  <!-- auteur -->
-                    <td>{{ livre[3] }}</td>  <!-- annee_publication -->
-                    <td>{{ livre[4] }}</td>  <!-- genre -->
-                    <td>{{ livre[5] }}</td>  <!-- description -->
-                    <td>{{ 'Oui' if livre[6] else 'Non' }}</td>  <!-- disponible -->
-                    <td>{{ livre[7] }}</td>  <!-- date_ajout -->
-                    <td>
-                        <form action="{{ url_for('supprimer_livre', livre_id=livre[0]) }}" method="post" onsubmit="return confirm('Voulez-vous vraiment supprimer ce livre ?');">
-                            <button type="submit" class="supprimer-btn">Supprimer</button>
-                        </form>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</main>
+<h2>Authentification</h2>
+{% if error %}
+    <p class="error">Identifiants incorrects</p>
+{% endif %}
+<form method="POST" action="{{ url_for('authentification') }}">
+    <label for="username">Nom d'utilisateur</label>
+    <input type="text" id="username" name="username" required>
+    <label for="password">Mot de passe</label>
+    <input type="password" id="password" name="password" required>
+    <button type="submit">Se connecter</button>
+</form>
 
 </body>
 </html>
