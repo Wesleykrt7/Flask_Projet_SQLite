@@ -1,77 +1,56 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste des Livres</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 1rem;
-            text-align: center;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background-color: #fff;
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-    </style>
-</head>
-<body>
+from flask import Flask, render_template, request, redirect, url_for, session
+import sqlite3
 
-<header>
-    <h1>Liste des Livres</h1>
-</header>
+app = Flask(__name__)                                                                                                                  
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'  # Clé secrète pour les sessions
 
-<main>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Titre</th>
-                <th>Auteur</th>
-                <th>Année de Publication</th>
-                <th>Genre</th>
-                <th>Description</th>
-                <th>Disponible</th>
-                <th>Date d'Ajout</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for livre in livres %}
-                <tr>
-                    <td>{{ livre[0] }}</td>  <!-- livre_id -->
-                    <td>{{ livre[1] }}</td>  <!-- titre -->
-                    <td>{{ livre[2] }}</td>  <!-- auteur -->
-                    <td>{{ livre[3] }}</td>  <!-- annee_publication -->
-                    <td>{{ livre[4] }}</td>  <!-- genre -->
-                    <td>{{ livre[5] }}</td>  <!-- description -->
-                    <td>{{ 'Oui' if livre[6] else 'Non' }}</td>  <!-- disponible -->
-                    <td>{{ livre[7] }}</td>  <!-- date_ajout -->
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</main>
+# Fonction pour vérifier si l'utilisateur est authentifié
+def est_authentifie():
+    return session.get('authentifie')
 
-</body>
-</html>
+# Page d'accueil -> Redirige vers l'authentification
+@app.route('/')
+def accueil():
+    return redirect(url_for('authentification'))
+
+# Route d'authentification
+@app.route('/authentification', methods=['GET', 'POST'])
+def authentification():
+    if request.method == 'POST':
+        if request.form['username'] == 'admin' and request.form['password'] == 'password':  
+            session['authentifie'] = True
+            return redirect(url_for('livres'))
+        else:
+            return render_template('formulaire_authentification.html', error=True)
+    return render_template('formulaire_authentification.html', error=False)
+
+# Route pour afficher les livres
+@app.route('/livres')
+def livres():
+    if not est_authentifie():
+        return redirect(url_for('authentification'))
+
+    conn = sqlite3.connect('bibliotheque.db')  
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM Livres')  
+    livres = cursor.fetchall()
+    conn.close()
+    
+    return render_template('livres.html', livres=livres)  
+
+# Route pour supprimer un livre
+@app.route('/supprimer_livre/<int:livre_id>', methods=['POST'])
+def supprimer_livre(livre_id):
+    if not est_authentifie():
+        return redirect(url_for('authentification'))
+
+    conn = sqlite3.connect('bibliotheque.db')
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM Livres WHERE livre_id = ?', (livre_id,))
+    conn.commit()
+    conn.close()
+
+    return redirect(url_for('livres'))
+
+if __name__ == "__main__":
+    app.run(debug=True)
