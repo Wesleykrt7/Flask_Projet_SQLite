@@ -3,29 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulaire d'Authentification</title>
+    <title>Liste des Livres</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             padding: 20px;
         }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #fff;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .actions {
+            text-align: center;
+        }
         form {
-            width: 300px;
-            margin: 0 auto;
-            padding: 20px;
+            margin-bottom: 20px;
+            padding: 15px;
             background-color: #fff;
             border-radius: 5px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
-        label {
-            display: block;
-            margin-bottom: 10px;
-        }
-        input[type="text"], input[type="password"] {
+        input[type="text"], input[type="number"], input[type="checkbox"], textarea {
             width: 100%;
             padding: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             border: 1px solid #ddd;
             border-radius: 4px;
         }
@@ -40,24 +61,73 @@
         button:hover {
             background-color: #45a049;
         }
-        .error {
-            color: red;
-        }
     </style>
 </head>
 <body>
 
-<h2>Authentification</h2>
-{% if error %}
-    <p class="error">Identifiants incorrects</p>
-{% endif %}
-<form method="POST" action="{{ url_for('authentification') }}">
-    <label for="username">Nom d'utilisateur</label>
-    <input type="text" id="username" name="username" required>
-    <label for="password">Mot de passe</label>
-    <input type="password" id="password" name="password" required>
-    <button type="submit">Se connecter</button>
-</form>
+<header>
+    <h1>Liste des Livres</h1>
+</header>
+
+<main>
+    <!-- Formulaire pour ajouter un livre -->
+    <form action="{{ url_for('livres') }}" method="post">
+        <h3>Ajouter un Nouveau Livre</h3>
+        <label for="titre">Titre</label>
+        <input type="text" id="titre" name="titre" required>
+
+        <label for="auteur">Auteur</label>
+        <input type="text" id="auteur" name="auteur" required>
+
+        <label for="annee_publication">Année de Publication</label>
+        <input type="number" id="annee_publication" name="annee_publication" required>
+
+        <label for="genre">Genre</label>
+        <input type="text" id="genre" name="genre" required>
+
+        <label for="description">Description</label>
+        <textarea id="description" name="description" rows="4" required></textarea>
+
+        <label for="disponible">Disponible</label>
+        <input type="checkbox" id="disponible" name="disponible">
+
+        <button type="submit">Ajouter le Livre</button>
+    </form>
+
+    <!-- Table des livres -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Titre</th>
+                <th>Auteur</th>
+                <th>Année de Publication</th>
+                <th>Genre</th>
+                <th>Description</th>
+                <th>Disponible</th>
+                <th>Date d'Ajout</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for livre in livres %}
+                <tr>
+                    <td>{{ livre[0] }}</td>  <!-- livre_id -->
+                    <td>{{ livre[1] }}</td>  <!-- titre -->
+                    <td>{{ livre[2] }}</td>  <!-- auteur -->
+                    <td>{{ livre[3] }}</td>  <!-- annee_publication -->
+                    <td>{{ livre[4] }}</td>  <!-- genre -->
+                    <td>{{ livre[5] }}</td>  <!-- description -->
+                    <td>{{ 'Oui' if livre[6] else 'Non' }}</td>  <!-- disponible -->
+                    <td>{{ livre[7] }}</td>  <!-- date_ajout -->
+                    <td class="actions">
+                        <a href="{{ url_for('supprimer_livre', livre_id=livre[0]) }}">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</main>
 
 </body>
 </html>
